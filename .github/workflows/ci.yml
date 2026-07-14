@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8
+
+      - name: Lint with flake8
+        run: |
+          flake8 src --max-line-length=120 --ignore=E501,W503 --exit-zero
+
+      - name: Run analyzer against sample CSV log (smoke test)
+        run: |
+          python src/main.py --log sample_logs/sample_auth.csv \
+            --csv reports/report.csv \
+            --html reports/dashboard.html \
+            --pdf reports/report.pdf \
+            --sigma-rules rules/sigma
+
+      - name: Run analyzer against sample sshd log (smoke test)
+        run: |
+          python src/main.py --log sample_logs/sample_sshd.log
+
+      - name: Generate synthetic log and analyze it (smoke test)
+        run: |
+          python src/generate_logs.py --output sample_logs/generated.csv --events 100 \
+            --brute-force-bursts 2 --spray-users 1 --seed 7
+          python src/main.py --log sample_logs/generated.csv
+
+      - name: Convert sshd log to standard CSV and re-analyze (smoke test)
+        run: |
+          python src/convert_to_csv.py --input sample_logs/sample_sshd.log \
+            --output sample_logs/converted.csv
+          python src/main.py --log sample_logs/converted.csv
+
+      - name: Shellcheck the Linux log export script (syntax only)
+        run: |
+          bash -n linux/export_linux_logs.sh
+          echo "linux/export_linux_logs.sh syntax OK"
+
+      - name: Upload generated reports as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-py${{ matrix.python-version }}
+          path: reports/
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t soc-log-analyzer:ci .
+
+      - name: Run container smoke test
+        run: docker run --rm soc-log-analyzer:ci

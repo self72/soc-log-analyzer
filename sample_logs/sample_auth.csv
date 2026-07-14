@@ -1,0 +1,20 @@
+timestamp,event_id,user,src_ip,status,message
+2026-07-10 08:01:12,4624,jdoe,10.0.0.15,SUCCESS,Normal login
+2026-07-10 08:15:01,4625,admin,203.0.113.55,FAILED,Failed password for admin
+2026-07-10 08:15:12,4625,admin,203.0.113.55,FAILED,Failed password for admin
+2026-07-10 08:15:24,4625,admin,203.0.113.55,FAILED,Failed password for admin
+2026-07-10 08:15:36,4625,admin,203.0.113.55,FAILED,Failed password for admin
+2026-07-10 08:15:48,4625,admin,203.0.113.55,FAILED,Failed password for admin
+2026-07-10 08:16:02,4625,admin,203.0.113.55,FAILED,Failed password for admin
+2026-07-10 08:16:20,4624,admin,203.0.113.55,SUCCESS,Login succeeded after brute force
+2026-07-10 09:02:00,4624,mjones,10.0.0.22,SUCCESS,Normal login
+2026-07-10 02:14:00,4624,svc_backup,10.0.0.5,SUCCESS,Off hours automated login
+2026-07-10 11:20:00,4625,root,198.51.100.10,FAILED,Failed password for root
+2026-07-10 11:20:15,4625,root,198.51.100.11,FAILED,Failed password for root
+2026-07-10 11:20:30,4625,root,198.51.100.12,FAILED,Failed password for root
+2026-07-10 11:20:45,4625,root,198.51.100.13,FAILED,Failed password for root
+2026-07-10 13:00:00,4624,ksmith,10.0.0.31,SUCCESS,Normal login
+2026-07-10 13:05:00,4624,ksmith,45.33.10.20,SUCCESS,Login from new IP
+2026-07-10 13:10:00,4624,ksmith,91.198.22.10,SUCCESS,Login from another new IP
+2026-07-10 13:15:00,4624,ksmith,178.62.55.4,SUCCESS,Login from a fourth IP
+2026-07-10 15:30:00,4634,jdoe,10.0.0.15,SUCCESS,Logoff

@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  soc-analyzer:
+    build: .
+    container_name: soc-log-analyzer
+    volumes:
+      - ./logs:/app/logs          # mount your real log files here
+      - ./reports:/app/reports    # generated CSV/HTML/PDF reports land here
+      - ./rules:/app/rules        # customize Sigma / YARA rules without rebuilding
+    environment:
+      - VT_API_KEY=${VT_API_KEY:-}
+    command:
+      - "--log"
+      - "sample_logs/sample_auth.csv"
+      - "--csv"
+      - "reports/report.csv"
+      - "--html"
+      - "reports/dashboard.html"
+      - "--pdf"
+      - "reports/report.pdf"
+      - "--sigma-rules"
+      - "rules/sigma"
