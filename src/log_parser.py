@@ -22,12 +22,20 @@ from pathlib import Path
 # timestamp (datetime), event_id (str), user (str), src_ip (str),
 # status (str: SUCCESS/FAILED/UNKNOWN), message (str), raw (str)
 
+# Timestamp can be either the classic syslog format ("Jul 10 08:15:01") or
+# the modern ISO 8601 format used by rsyslog/journald on newer distros
+# (e.g. Kali/Debian 12+): "2026-07-14T15:21:32.347389-04:00"
+TS_PATTERN = (
+    r"(?P<ts>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:[+-]\d{2}:?\d{2}|Z)?"
+    r"|\w{3}\s+\d+\s+\d{2}:\d{2}:\d{2})"
+)
+
 SSHD_FAILED_RE = re.compile(
-    r"(?P<ts>\w{3}\s+\d+\s+\d{2}:\d{2}:\d{2}).*sshd.*Failed password for "
+    TS_PATTERN + r".*sshd.*Failed password for "
     r"(invalid user )?(?P<user>\S+) from (?P<ip>[\d.]+)"
 )
 SSHD_ACCEPTED_RE = re.compile(
-    r"(?P<ts>\w{3}\s+\d+\s+\d{2}:\d{2}:\d{2}).*sshd.*Accepted password for "
+    TS_PATTERN + r".*sshd.*Accepted password for "
     r"(?P<user>\S+) from (?P<ip>[\d.]+)"
 )
 
@@ -35,6 +43,16 @@ CURRENT_YEAR = datetime.now().year
 
 
 def _parse_ts(ts_str: str):
+    ts_str = ts_str.strip()
+
+    # Modern ISO 8601 with optional microseconds and timezone offset,
+    # e.g. "2026-07-14T15:21:32.347389-04:00" (Kali/Debian 12+ journald format)
+    try:
+        dt = datetime.fromisoformat(ts_str)
+        return dt.replace(tzinfo=None)  # normalize to naive local wall-clock time
+    except ValueError:
+        pass
+
     fmts = [
         "%Y-%m-%d %H:%M:%S",
         "%Y-%m-%dT%H:%M:%S",
@@ -43,12 +61,12 @@ def _parse_ts(ts_str: str):
     ]
     for fmt in fmts:
         try:
-            return datetime.strptime(ts_str.strip(), fmt)
+            return datetime.strptime(ts_str, fmt)
         except ValueError:
             continue
     # syslog-style "Jul 10 08:15:32" (no year)
     try:
-        dt = datetime.strptime(ts_str.strip(), "%b %d %H:%M:%S")
+        dt = datetime.strptime(ts_str, "%b %d %H:%M:%S")
         return dt.replace(year=CURRENT_YEAR)
     except ValueError:
         pass

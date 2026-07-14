@@ -1,0 +1,18 @@
+2026-07-11T06:01:31.014671-04:00 kali sshd-session[16328]: pam_unix(sshd:session): session closed for user kali
+2026-07-11T06:01:31.016751-04:00 kali sshd-session[16328]: syslogin_perform_logout: logout() returned an error
+2026-07-11T06:01:31.019763-04:00 kali sshd-session[17162]: Received disconnect from 127.0.0.1 port 60504:11: disconnected by user
+2026-07-11T06:01:31.019821-04:00 kali sshd-session[17162]: Disconnected from user kali 127.0.0.1 port 60504
+2026-07-11T06:01:31.022378-04:00 kali sshd-session[16978]: pam_unix(sshd:session): session closed for user kali
+2026-07-11T06:01:31.025864-04:00 kali sshd-session[16978]: syslogin_perform_logout: logout() returned an error
+2026-07-14T15:16:16.996536-04:00 kali sshd[1107]: Server listening on 0.0.0.0 port 22.
+2026-07-14T15:16:16.996808-04:00 kali sshd[1107]: Server listening on :: port 22.
+2026-07-14T15:21:19.552767-04:00 kali sshd-session[5477]: Accepted password for kali from 127.0.0.1 port 48548 ssh2
+2026-07-14T15:21:19.562067-04:00 kali sshd-session[5477]: pam_unix(sshd:session): session opened for user kali(uid=1000) by kali(uid=0)
+2026-07-14T15:21:30.685633-04:00 kali sshd-session[5594]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1  user=kali
+2026-07-14T15:21:32.347389-04:00 kali sshd-session[5594]: Failed password for kali from 127.0.0.1 port 44218 ssh2
+2026-07-14T15:21:39.377458-04:00 kali sshd-session[5594]: Failed password for kali from 127.0.0.1 port 44218 ssh2
+2026-07-14T15:21:45.356397-04:00 kali sshd-session[5594]: Failed password for kali from 127.0.0.1 port 44218 ssh2
+2026-07-14T15:21:46.613470-04:00 kali sshd-session[5594]: Connection closed by authenticating user kali 127.0.0.1 port 44218 [preauth]
+2026-07-14T15:21:46.618063-04:00 kali sshd-session[5594]: PAM 2 more authentication failures; logname= uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1  user=kali
+2026-07-14T15:22:03.582658-04:00 kali sshd-session[5973]: Accepted password for kali from 127.0.0.1 port 35132 ssh2
+2026-07-14T15:22:03.589668-04:00 kali sshd-session[5973]: pam_unix(sshd:session): session opened for user kali(uid=1000) by kali(uid=0)
