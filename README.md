@@ -199,7 +199,7 @@ python src/main.py --log sample_logs/converted.csv --html reports/dashboard.html
 ### Linux / macOS
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/self72/soc-log-analyzer.git
 cd soc-log-analyzer
 python3 -m venv .venv
 source .venv/bin/activate
@@ -209,7 +209,7 @@ pip install -r requirements.txt
 ### Windows (PowerShell)
 
 ```powershell
-git clone <your-repo-url>
+git clone https://github.com/self72/soc-log-analyzer.git
 cd soc-log-analyzer
 python -m venv .venv
 .venv\Scripts\activate
